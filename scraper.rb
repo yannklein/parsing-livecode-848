@@ -22,13 +22,14 @@ end
 
 def scrape_movie(url)
   # open and read the url, gives us html string
-  html_serialized = URI.open(url).read
+  html_serialized = URI.open(url, "Accept-Language" => "en-US"
+  ).read
   # parse the html with nokogiri, gives us a Nokogiri::HTML object
   doc = Nokogiri::HTML(html_serialized)
   # search for the 5 first items
   title = doc.search('.sc-b73cd867-0.eKrKux').text.strip
-  storyline = doc.search(".ipc-html-content--base").text.strip
-  year = doc.search('.sc-8c396aa2-2').text.strip
+  storyline = doc.search('.sc-16ede01-0').text.strip
+  year = doc.search('.sc-8c396aa2-2').first.text.strip.to_i
   cast = doc.search('.sc-11eed019-7').first(3).map do |cast_item|
     cast_item.search(".sc-11eed019-1").text.strip
   end
